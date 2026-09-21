@@ -58,6 +58,6 @@ while (true) {
         if (savefilename=="Save the image")
             else
     }
-    else if (filtername="Exit") return 0;
+    else if (filtername=="Exit") return 0;
 }
 }
