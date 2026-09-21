@@ -1,5 +1,6 @@
 #include "Image_Class.h"
 using namespace std;
+
 void task1(Image filter1) {
     for (int i = 0; i < filter1.width; i++) {
         for (int j = 0; j < filter1.height; j++) {
@@ -13,6 +14,21 @@ void task1(Image filter1) {
         }
     }
     filter1.saveImage("test.jpg");
+}
+
+void task2(Image filter2) {
+    for (int x = 0; x < filter2.width; x++) {
+        for (int y = 0; y < filter2.height; y++) {
+            int avg = 0;
+            avg += (image(x, y, 0) + image(x, y, 1) + image(x, y, 2))/3;
+            if (avg > 127) avg = 255;
+            else avg = 0;
+            for (int z = 0; z < 3; z++) {
+                image(x, y, z) = avg;
+            }
+        }
+    }
+    filter2.saveImage("test.jpg");
 }
 
 void task5(Image filter5) {
