@@ -56,8 +56,23 @@ void task5(Image filter5) {
         }
     }
     helper.saveImage("test.jpg");
-
 }
+//Still need some work.
+void task7(Image filter7) {
+    int lightening = -50;
+    Image filter7("mario.bmp");
+    for (int x = 0; x < filter7.width; x++) {
+        for (int y = 0; y < filter7.height; y++) {
+            for (int z = 0; z < 3; z++) {
+                if (filter7(x, y, z) + lightening > 255) image(x, y,z) = 255;
+                else if (filter7(x, y, z) + lightening < 0) image(x,y,z) = 0;
+                else filter7(x, y, z) += lightening;
+            }
+        }
+    }
+    filter7.saveImage("test.jpg");
+}
+
 
 int main() {
     cout<<"please load a file to work on it"<<endl;
