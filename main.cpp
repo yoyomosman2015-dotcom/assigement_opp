@@ -6,8 +6,9 @@ void task1(Image filter1) {
         for (int j = 0; j < filter1.height; j++) {
             int grayscale=0;
             for (int k = 0; k < filter1.channels; k++) {
-                grayscale+=filter1(i, j, k) ;
+                grayscale += filter1(i, j, k) ;
             }
+            grayscale /= 3;
             filter1(i,j,0)=grayscale;
             filter1(i,j,1)=grayscale;
             filter1(i,j,2)=grayscale;
