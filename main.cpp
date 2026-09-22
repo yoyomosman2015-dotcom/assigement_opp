@@ -1,18 +1,46 @@
 #include "Image_Class.h"
 using namespace std;
+
 void task1(Image filter1) {
     for (int i = 0; i < filter1.width; i++) {
         for (int j = 0; j < filter1.height; j++) {
             int grayscale=0;
             for (int k = 0; k < filter1.channels; k++) {
-                grayscale+=filter1(i, j, k) ;
+                grayscale += filter1(i, j, k) ;
             }
+            grayscale /= 3;
             filter1(i,j,0)=grayscale;
             filter1(i,j,1)=grayscale;
             filter1(i,j,2)=grayscale;
         }
     }
     filter1.saveImage("test.jpg");
+}
+
+void task2(Image filter2) {
+    for (int x = 0; x < filter2.width; x++) {
+        for (int y = 0; y < filter2.height; y++) {
+            int avg = 0;
+            avg += (filter2(x, y, 0) + filter2(x, y, 1) + filter2(x, y, 2))/3;
+            if (avg > 127) avg = 255;
+            else avg = 0;
+            for (int z = 0; z < 3; z++) {
+                filter2(x, y, z) = avg;
+            }
+        }
+    }
+    filter2.saveImage("test.jpg");
+}
+
+void task3(Image filter3) {
+    for (int x = 0; x < filter3.width; x++) {
+        for (int y = 0; y < filter3.height; y++) {
+            for (int z = 0; z < filter3.channels; z++) {
+                filter3(x, y, z) = 255 - filter3(x, y, z);
+            }
+        }
+    }
+    filter3.saveImage("test.jpg");
 }
 
 void task5(Image filter5) {
@@ -40,8 +68,24 @@ void task5(Image filter5) {
         }
     }
     helper.saveImage("test.jpg");
-
 }
+
+void task7(Image filter7) {
+    int lightening;
+    cout << "lightening = ";
+    cin >> lightening;
+    for (int x = 0; x < filter7.width; x++) {
+        for (int y = 0; y < filter7.height; y++) {
+            for (int z = 0; z < 3; z++) {
+                if ((filter7(x, y, z) + lightening) > 255) filter7(x, y,z) = 255;
+                else if ((filter7(x, y, z) + lightening) < 0) filter7(x,y,z) = 0;
+                else filter7(x, y, z) += lightening;
+            }
+        }
+    }
+    filter7.saveImage("test.jpg");
+}
+
 
 int main() {
     cout<<"please load a file to work on it"<<endl;
@@ -58,6 +102,6 @@ while (true) {
         if (savefilename=="Save the image")
             else
     }
-    else if (filtername="Exit") return 0;
+    else if (filtername=="Exit") return 0;
 }
 }
