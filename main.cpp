@@ -14,7 +14,23 @@ void task1(Image filter1) {
     }
     filter1.saveImage("test.jpg");
 }
+void task8(Image image) {
+    int sizeA,sizeB;
+    cout << "Enter the  size  : width  height ->"; cin >> sizeA >> sizeB;
+    if (sizeA<0) sizeA=0;
+    if (sizeB<0) sizeB=0;
+    Image image2(sizeA,sizeB);
+    for (int i=0;i<image2.width;i++) {
+        for (int j=0;j<image2.height;j++) {
+            for (int k=0;k<3;k++) {
 
+                    image2(i,j,k)=image(i * image.width / sizeA,j * image.height / sizeB,k);
+
+            }
+        }
+    }
+    image2.saveImage("test.jpg");
+}
 void task5(Image filter5) {
     int x= filter5.width-1;
     int y= filter5.height-1;
