@@ -21,15 +21,26 @@ void task2(Image filter2) {
     for (int x = 0; x < filter2.width; x++) {
         for (int y = 0; y < filter2.height; y++) {
             int avg = 0;
-            avg += (image(x, y, 0) + image(x, y, 1) + image(x, y, 2))/3;
+            avg += (filter2(x, y, 0) + filter2(x, y, 1) + filter2(x, y, 2))/3;
             if (avg > 127) avg = 255;
             else avg = 0;
             for (int z = 0; z < 3; z++) {
-                image(x, y, z) = avg;
+                filter2(x, y, z) = avg;
             }
         }
     }
     filter2.saveImage("test.jpg");
+}
+
+void task3(Image filter3) {
+    for (int x = 0; x < filter3.width; x++) {
+        for (int y = 0; y < filter3.height; y++) {
+            for (int z = 0; z < filter3.channels; z++) {
+                filter3(x, y, z) = 255 - filter3(x, y, z);
+            }
+        }
+    }
+    filter3.saveImage("test.jpg");
 }
 
 void task5(Image filter5) {
@@ -58,15 +69,16 @@ void task5(Image filter5) {
     }
     helper.saveImage("test.jpg");
 }
-//Still need some work.
+
 void task7(Image filter7) {
-    int lightening = -50;
-    Image filter7("mario.bmp");
+    int lightening;
+    cout << "lightening = ";
+    cin >> lightening;
     for (int x = 0; x < filter7.width; x++) {
         for (int y = 0; y < filter7.height; y++) {
             for (int z = 0; z < 3; z++) {
-                if (filter7(x, y, z) + lightening > 255) image(x, y,z) = 255;
-                else if (filter7(x, y, z) + lightening < 0) image(x,y,z) = 0;
+                if ((filter7(x, y, z) + lightening) > 255) filter7(x, y,z) = 255;
+                else if ((filter7(x, y, z) + lightening) < 0) filter7(x,y,z) = 0;
                 else filter7(x, y, z) += lightening;
             }
         }
