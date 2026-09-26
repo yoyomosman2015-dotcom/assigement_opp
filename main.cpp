@@ -86,6 +86,30 @@ void task7(Image filter7) {
     filter7.saveImage("test.jpg");
 }
 
+// لوقت الحاجة 😜
+/*
+void task15(Image filter15) {
+    int deg;
+    cout << "purple deg = ";
+    cin >> deg;
+    for (int x = 0; x < filter15.width; x++) {
+        for (int y = 0; y < filter15.height; y++) {
+            for (int z = 0; z < 3; z+=2) {
+                if (filter15(x, y, z) + deg > 255) {
+                    filter15(x, y, z) = 255;
+                }
+                else if (filter15(x, y, z) + deg < 0) {
+                    filter15(x, y, z) = 0;
+                }
+                else {
+                    filter15(x, y, z) += deg;
+                }
+            }
+        }
+    }
+    filter15.saveImage("test.jpg");
+}
+*/
 
 int main() {
     cout<<"please load a file to work on it"<<endl;
