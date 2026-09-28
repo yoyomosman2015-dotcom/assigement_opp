@@ -85,7 +85,22 @@ void task7(Image filter7) {
     }
     filter7.saveImage("test.jpg");
 }
-
+void filter8(Image image) {
+    int width,height;
+    cout << "Enter width height\n";
+    cin >> width >> height;
+    if (width<=0) {width=0;}
+    if (height<=0) {height=0;}
+    Image image2(width,height);
+    for (int i=0;i<image2.width;i++) {
+        for (int j=0;j<image2.height;j++) {
+            for (int k=0;k<3;k++) {
+                image2(i,j,k)=image(i*image.width/image2.width,j*image.height/image2.height,k);
+            }
+        }
+        image2.saveImage("test.jpg");
+    }
+}
 
 int main() {
     cout<<"please load a file to work on it"<<endl;
