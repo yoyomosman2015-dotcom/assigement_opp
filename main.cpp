@@ -1,6 +1,6 @@
 #include "Image_Class.h"
 using namespace std;
-
+int  DetectIfSaveOrNOt=0;
 void task1(Image filter1) {
     for (int i = 0; i < filter1.width; i++) {
         for (int j = 0; j < filter1.height; j++) {
@@ -15,6 +15,7 @@ void task1(Image filter1) {
         }
     }
     filter1.saveImage("test.jpg");
+    cout<<"Filter1 is done"<<endl;
 }
 
 void task2(Image filter2) {
@@ -30,6 +31,7 @@ void task2(Image filter2) {
         }
     }
     filter2.saveImage("test.jpg");
+    cout<<"Filter2 is done"<<endl;
 }
 
 void task3(Image filter3) {
@@ -41,52 +43,10 @@ void task3(Image filter3) {
         }
     }
     filter3.saveImage("test.jpg");
+    cout<<"Filter3 is done"<<endl;
 }
 
-void task5(Image filter5) {
-    int x= filter5.width-1;
-    int y= filter5.height-1;
-    Image helper=filter5;
-    string s; cin>>s;
-    helper.saveImage("test1.jpg");
-    if (s=="horizantel") {
-        for (int i = 0; i < filter5.width; i++) {
-            for (int j = 0; j < filter5.height; j++) {
-                helper(x-i,j,0)=filter5(i,j,0);
-                helper(x-i,j,1)=filter5(i,j,1);
-                helper(x-i,j,2)=filter5(i,j,2);
-            }
-        }
-    }
-    else {
-        for (int i = 0; i < filter5.width; i++) {
-            for (int j = 0; j < filter5.height; j++) {
-                helper(i,y-j,0)=filter5(i,j,0);
-                helper(i,y-j,1)=filter5(i,j,1);
-                helper(i,y-j,2)=filter5(i,j,2);
-            }
-        }
-    }
-    helper.saveImage("test.jpg");
-}
-
-void task7(Image filter7) {
-    int lightening;
-    cout << "lightening = ";
-    cin >> lightening;
-    for (int x = 0; x < filter7.width; x++) {
-        for (int y = 0; y < filter7.height; y++) {
-            for (int z = 0; z < 3; z++) {
-                if ((filter7(x, y, z) + lightening) > 255) filter7(x, y,z) = 255;
-                else if ((filter7(x, y, z) + lightening) < 0) filter7(x,y,z) = 0;
-                else filter7(x, y, z) += lightening;
-            }
-        }
-    }
-    filter7.saveImage("test.jpg");
-}
-
-void Filter4(Image image) {
+void task4(Image image) {
     enum entype{ Fancy=1,Simple};
     cout << "What is the type of image? { Fancy=1,Simple=2}" << endl;
     int y; cin >> y;
@@ -142,9 +102,87 @@ void Filter4(Image image) {
     }
     image2.saveImage("test.jpg");
 }
-int main() {
-    Image image("luffy.jpg");
-    Filter4(image);
+
+void task5(Image filter5) {
+    int x= filter5.width-1;
+    int y= filter5.height-1;
+    Image helper=filter5;
+    cout <<"do you want it horizantel press 0 or vertical press 1"<<endl;
+    string s; cin>>s;
+    helper.saveImage("test1.jpg");
+    if (s=="0") {
+        for (int i = 0; i < filter5.width; i++) {
+            for (int j = 0; j < filter5.height; j++) {
+                helper(x-i,j,0)=filter5(i,j,0);
+                helper(x-i,j,1)=filter5(i,j,1);
+                helper(x-i,j,2)=filter5(i,j,2);
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < filter5.width; i++) {
+            for (int j = 0; j < filter5.height; j++) {
+                helper(i,y-j,0)=filter5(i,j,0);
+                helper(i,y-j,1)=filter5(i,j,1);
+                helper(i,y-j,2)=filter5(i,j,2);
+            }
+        }
+    }
+    helper.saveImage("test.jpg");
+    cout<<"Filter5 is done"<<endl;
+}
+
+void filternum6(const string& image_path, Image& image)
+{
+    Image newIma(image.height, image.width);
+
+    for (int oldcol = 0 ; oldcol < image.width ; oldcol++)
+        for (int oldrow = 0 ; oldrow < image.height ; oldrow++)
+        {
+            int newrow=0, newcol=0;
+            newrow = oldcol;
+            newcol = (image.height - 1) - oldrow;
+            for (int c = 0 ; c < image.channels ; c++)
+            {
+                newIma.setPixel(newcol, newrow, c, image.getPixel(oldcol, oldrow, c));
+            }
+        }
+    image = newIma;
+    image.saveImage("test.jpg");
+}
+
+void task7(Image filter7) {
+    int lightening;
+    cout << "lightening = ";
+    cin >> lightening;
+    for (int x = 0; x < filter7.width; x++) {
+        for (int y = 0; y < filter7.height; y++) {
+            for (int z = 0; z < 3; z++) {
+                if ((filter7(x, y, z) + lightening) > 255) filter7(x, y,z) = 255;
+                else if ((filter7(x, y, z) + lightening) < 0) filter7(x,y,z) = 0;
+                else filter7(x, y, z) += lightening;
+            }
+        }
+    }
+    filter7.saveImage("test.jpg");
+    cout<<"Filter7 is done"<<endl;
+}
+
+void task8(Image image) {
+    int width,height;
+    cout << "Enter width height\n";
+    cin >> width >> height;
+    if (width<=0) {width=0;}
+    if (height<=0) {height=0;}
+    Image image2(width,height);
+    for (int i=0;i<image2.width;i++) {
+        for (int j=0;j<image2.height;j++) {
+            for (int k=0;k<3;k++) {
+                image2(i,j,k)=image(i*image.width/image2.width,j*image.height/image2.height,k);
+            }
+        }
+        image2.saveImage("test.jpg");
+    }
 }
 // لوقت الحاجة 😜
 /*
@@ -171,21 +209,130 @@ void task15(Image filter15) {
 }
 */
 
-int main() {
-    cout<<"please load a file to work on it"<<endl;
-    string filename; cin>>filename;
-    Image image(filename);
-
-    string filtername; cin>>filtername;
-    cout<<filtername<<endl;
-while (true) {
-    if (filtername=="Grayscale Conversion") task1(image);
-    else if (filtername=="Flip Image") task5(image);
-    else if (filtername=="Save the image") {
-        string savefilename; cin>>savefilename;
-        if (savefilename=="Save the image")
-            else
+bool isValidFilename(const std::string& filename) {
+    const char* extension = strrchr(filename.c_str(), '.');
+    if (extension == nullptr) {
+        cout << "Invalid filename: " << filename << endl;
+       return false;
     }
-    else if (filtername=="Exit") return 0;
+return true;
 }
+
+ void TheMain() {
+    cout<<"Load a new image"<<endl;
+    cout<<"Filter 1: Grayscale Conversion"<<endl;
+    cout<<"Filter 2: Black and White"<<endl;
+    cout<<"Filter 3: Invert Image"<<endl;
+    cout<<"Filter 4: Adding a Frame to the Picture"<<endl;
+    cout<<"Filter 5: Flip Image"<<endl;
+    cout<<"Filter 6: Rotate Image"<<endl;
+    cout<<"Filter 7: Darken and Lighten Image"<<endl;
+    cout<<"Filter 8: Resizing Images"<<endl;
+    cout<<"Save the image"<<endl;
+    cout<<"Exit"<<endl;
 }
+
+void Save(Image image,string save_filename) {
+    cout<<"save to this image press=0,new image press=1,"<<endl;
+    int y; cin>>y;
+    if (y==0)  image.saveImage(save_filename);
+        else {
+            cout<<"please enter the name of your image"<<endl;
+            string save_name; cin>>save_name;
+            image.saveImage(save_name);
+        }
+    cout<<"saving done"<<endl;
+    DetectIfSaveOrNOt=0;
+}
+
+int main() {
+    cout<<"please enter your filename"<<endl;
+    string s; cin>>s;
+     bool vaild = isValidFilename(s);
+    while (!vaild) {
+        cin>>s;
+        vaild=isValidFilename(s);
+    }
+    Image picture(s);
+    picture.saveImage("test.jpg");
+    Image picture2("test.jpg");
+    while (true) {
+        TheMain();
+        string name; cin>>name;
+        if (name=="Load") {
+            if (DetectIfSaveOrNOt>0) {
+                cout<<"if you want to save the image press 1"<<endl;
+                int x; cin>>x;
+                if (x==1) Save(picture,s);
+            }
+            cout<<"the name of loaded filter";
+            cin>>s;
+            isValidFilename(s);
+            Image picture3(s); picture3.saveImage("test.jpg");
+            cout<<"load is completed"<<endl;
+        }
+        else if (name=="Filter1") {
+            task1(picture2);
+            DetectIfSaveOrNOt++;
+        }
+        else if (name=="Filter2"){
+            task2(picture2);
+            DetectIfSaveOrNOt++;
+        }
+        else if (name=="Filter3") {
+            task3(picture2);
+            DetectIfSaveOrNOt++;
+        }
+        else if (name=="Filter4") {
+            task4(picture2);
+            DetectIfSaveOrNOt++;
+        }
+        else if (name=="Filter5") {
+            task5(picture2);
+            DetectIfSaveOrNOt++;
+        }
+         else if (name=="Filter6") {
+             cout << "How many degrees do you want to rotate? (90, 180, 270)" << "\n";
+             int degrees;
+             cin >> degrees;
+             DetectIfSaveOrNOt++;
+             if (degrees == 90)
+                 filternum6(s,picture2);
+             else if (degrees == 180)
+             {
+                 filternum6(s,picture2);
+                 filternum6(s,picture2);
+             }
+             else if (degrees == 270)
+             {
+                 filternum6(s,picture2);
+                 filternum6(s,picture2);
+                 filternum6(s,picture2);
+             }
+             else
+                 cout << "invalid input" << "\n";
+         }
+         else if (name=="Filter7") {
+             task7(picture2);
+             DetectIfSaveOrNOt++;
+         }
+         else if (name=="Filter8") {
+             task8(picture2);
+             DetectIfSaveOrNOt++;
+         }
+        else if (name=="Save") {
+           Save(picture2,s);
+        }
+        else if ("Exit"==name) {
+           if (DetectIfSaveOrNOt==0) {
+               return 0;
+           }
+            else {
+                cout<<"warning you dont save if you want to save press=1"<<endl;
+                int y; cin>>y;
+                if (y==1) Save(picture2,s);
+                else return 0;
+            }
+        }
+    }
+    }
