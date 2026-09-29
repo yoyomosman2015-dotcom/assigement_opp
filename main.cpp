@@ -107,14 +107,14 @@ Image task4(Image image) {
     return image2;
 }
 
-Image task5(Image filter5,string save_name) {
+Image task5(Image filter5) {
     int x= filter5.width-1;
     int y= filter5.height-1;
     Image helper=filter5;
-    cout << "flip the image h = horizontal or v = vertical";
+    cout <<"do you want it horizantel press 0 or vertical press 1"<<endl;
     string s; cin>>s;
-    helper.saveImage("test.jpg");
-    if (s == "h") {
+    helper.saveImage("test1.jpg");
+    if (s=="0") {
         for (int i = 0; i < filter5.width; i++) {
             for (int j = 0; j < filter5.height; j++) {
                 helper(x-i,j,0)=filter5(i,j,0);
@@ -241,22 +241,44 @@ string loadAFile() {
     }
     return s;
 }
+void TheMain() {
+    cout<<"Load a new image"<<endl;
+    cout<<"Filter 1: Grayscale Conversion"<<endl;
+    cout<<"Filter 2: Black and White"<<endl;
+    cout<<"Filter 3: Invert Image"<<endl;
+    cout<<"Filter 4: Adding a Frame to the Picture"<<endl;
+    cout<<"Filter 5: Flip Image"<<endl;
+    cout<<"Filter 6: Rotate Image"<<endl;
+    cout<<"Filter 7: Darken and Lighten Image"<<endl;
+    cout<<"Filter 8: Resizing Images"<<endl;
+    cout<<"Save the image"<<endl;
+    cout<<"Exit"<<endl;
+}
+void saveImage(Image &picture, bool &save,string s) {
+    cout<<"Do you want to save these changes to the original file? \"No = 0 or Yes = 1\"";
+    int x; cin>>x;
+    if (x==0) {
+        string isname;
+        cout << "New file name: " << '\n';
+        cin>>isname;
+        while (!isValidFilename(isname)) {
+            cin>>isname;
+        }
+        save = picture.saveImage(isname);
+    }
+    else {
+        if (picture.saveImage(s)){
+            cout<<"saving is completeted"<<endl;
+        }
+        else cout << "error!\n";
+    }
+}
 int main() {
     string s=loadAFile();
     Image picture(s);
     while (true) {
         bool save=false;
-        cout<<"Load a new image"<<endl;
-        cout<<"Filter 1: Grayscale Conversion"<<endl;
-        cout<<"Filter 2: Black and White"<<endl;
-        cout<<"Filter 3: Invert Image"<<endl;
-        cout<<"Filter 4: Adding a Frame to the Picture"<<endl;
-        cout<<"Filter 5: Flip Image"<<endl;
-        cout<<"Filter 6: Rotate Image"<<endl;
-        cout<<"Filter 7: Darken and Lighten Image"<<endl;
-        cout<<"Filter 8: Resizing Images"<<endl;
-        cout<<"Save the image"<<endl;
-        cout<<"Exit"<<endl;
+        TheMain();
         string name;
         cin>>name;
         if (name=="Load") {
@@ -271,11 +293,8 @@ int main() {
                     if (x==1) {
                         string isname;
                         cin>>isname;
-
-                        bool vaild1 = isValidFilename(isname);
-                        while (!vaild1) {
+                        while (! isValidFilename(isname)) {
                             cin>>isname;
-                            vaild1=isValidFilename(isname);
                         }
                         save = picture.saveImage(isname);
                     }
@@ -291,7 +310,7 @@ int main() {
         else if (name=="Filter2") picture = task2(picture,s);
         else if (name=="Filter3") picture = task3(picture,s);
         else if (name=="Filter4") picture = task4(picture);
-        else if (name=="Filter5") picture = task5(picture,s);
+        else if (name=="Filter5") picture = task5(picture);
         else if (name=="Filter6") {
              cout << "How many degrees do you want to rotate? (90, 180, 270)" << "\n";
              int degrees;
@@ -323,23 +342,7 @@ int main() {
         else if (name=="Filter7") picture = task7(picture,s);
         else if (name=="Filter8") picture  = task8(picture);
         else if (name=="Save") {
-            cout<<"Do you want to save these changes to the original file? \"No = 0 or Yes = 1\"";
-            int x; cin>>x;
-            if (x==0) {
-                string isname;
-                cout << "New file name: " << '\n';
-                cin>>isname;
-                while (!isValidFilename(isname)) {
-                    cin>>isname;
-                }
-                save = picture.saveImage(isname);
-            }
-            else {
-                if (picture.saveImage(s)){
-                    cout<<"saving is completeted"<<endl;
-                }
-                else cout << "error!\n";
-            }
+            saveImage(picture,save,s);
         }
         // Exit.
         else if ("Exit"==name) {
