@@ -3,7 +3,7 @@ name                                     id                           filters
 youssef mohamed osman                    20250791                      1,5
 Abdelrahman Haithem Mostafa Said         20250378                      4,8
 Nabil mohamed bahget mohamed             20250699                       6
-youssef tarek                            20250773                      2,3,7
+Youssef Tarek Moawad Eid                 20250773                      2,3,7
 */
 #include "Image_Class.h"
 using namespace std;
@@ -58,6 +58,8 @@ Image task3(Image &filter3) {
 }
 
 Image task4(Image &image) {
+    cout << "Enter the Thickness of the frame : ";
+    int size; cin >> size;
     enum entype{ Fancy=1,Simple};
     cout << "What is the type of image? { Fancy=1,Simple=2}" << endl;
     int y; cin >> y;
@@ -86,7 +88,7 @@ Image task4(Image &image) {
         }
     for (int i=0;i<image.width;i++) {
         int y=image.height;
-        if (i>21) y=22;
+        if (i>size) y=size;
         for (int j=0;j<y;j++) {
             image(i,j,0)=R;
             image(i,j,1)=G;
@@ -98,10 +100,10 @@ Image task4(Image &image) {
     }
     int start=0;
     if (type==entype::Fancy) {
-        for (int i=7;i<image.width-7;i++) {
-            int y=image.height-7;
-            if (i>13) y=14;
-            for (int j=7;j<y;j++) {
+        for (int i=size/3;i<image.width-size/3;i++) {
+            int y=image.height-(size/3);
+            if (i>size-size/3) y=size-size/3;
+            for (int j=size/3;j<y;j++) {
                     image(i,j,0)=255-R;
                     image(i,j,1)=255-G;
                     image(i,j,2)=255-B;
