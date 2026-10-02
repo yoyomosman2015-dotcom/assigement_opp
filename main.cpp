@@ -214,6 +214,25 @@ Image task8(Image &image) {
     return image2;
 }
 
+Image task15(Image filter15) {
+    for (int x = 0; x < filter15.width; x++) {
+        for (int y = 0; y < filter15.height; y++) {
+            for (int z = 0; z < 3; z++) {
+                if (filter15(x, y, z) - 40 < 0) filter15(x, y, z) = 0;
+                else filter15(x, y, z) -= 40;
+            }
+            if (filter15(x, y, 0) < 127) {
+                filter15(x, y, 0) = int(filter15(x, y, 0) * 1.5);
+            }
+            else{
+                filter15(x, y, 0) = (filter15(x, y, 0)+255)/2;
+            }
+        }
+    }
+    filter15.saveImage("test.jpg");
+    return filter15;
+}
+
 bool extension(string &s) {
     while (s.size()<5 ) {
         cout<<"invalid input : "<<s<<endl;
@@ -248,6 +267,8 @@ void List() {
     cout<<"Filter 6: Rotate Image"<<endl;
     cout<<"Filter 7: Darken and Lighten Image"<<endl;
     cout<<"Filter 8: Resizing Images"<<endl;
+
+    cout<<"Filter 15: Purple at Night Image"<<endl;
     cout<<"Save the image == s"<<endl;
     cout<<"Exit == ex"<<endl;
     cout << "***********************************\n";
@@ -366,6 +387,10 @@ int main() {
         else if (name=="8") {
             picture  = task8(picture);
             DetectIfSaveOrNOt++;
+        }
+        else if (name=="15") {
+            picture = task15(picture);
+            DetectIfSaveOrNot++;
         }
         else if (name=="s") {
             saveImage(picture,s);
