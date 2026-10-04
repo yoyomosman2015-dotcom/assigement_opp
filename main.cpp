@@ -221,12 +221,8 @@ Image task15(Image filter15) {
                 if (filter15(x, y, z) - 40 < 0) filter15(x, y, z) = 0;
                 else filter15(x, y, z) -= 40;
             }
-            if (filter15(x, y, 0) < 127) {
-                filter15(x, y, 0) = int(filter15(x, y, 0) * 1.5);
-            }
-            else{
-                filter15(x, y, 0) = (filter15(x, y, 0)+255)/2;
-            }
+            if (filter15(x, y, 0) *1.5 > 255) filter15(x, y, 0) = 255;
+            else filter15(x, y, 0) = int(filter15(x, y, 0) * 1.5);
         }
     }
     filter15.saveImage("test.jpg");
