@@ -6,9 +6,22 @@ Nabil mohamed bahget mohamed             20250699                       6
 Youssef Tarek Moawad Eid                 20250773                      2,3,7
 */
 #include "Image_Class.h"
+#include<algorithm>
 using namespace std;
 int  DetectIfSaveOrNOt=0;
 Image picture;
+bool extension(string &s) {
+    while (s.size()<5 ) {
+        cout<<"invalid input : "<<s<<endl;
+        return false;
+    }
+    while (!((s[s.size()-1]=='g' && s[s.size()-2]=='p' && s[s.size()-3]=='j' && s[s.size()-4]=='.') || (s[s.size()-1]=='p' && s[s.size()-2]=='m' && s[s.size()-3]=='b' && s[s.size()-4]=='.') || (s[s.size()-1]=='g' && s[s.size()-2]=='n' && s[s.size()-3]=='p' && s[s.size()-4]=='.') || (s[s.size()-1]=='a' && s[s.size()-2]=='g' && s[s.size()-3]=='t' && s[s.size()-4]=='.')))
+    {
+        cout<<"invalid input : "<<s<<endl;
+        return false;
+    }
+    return true;
+}
 Image task1(Image &filter1) {
     for (int i = 0; i < filter1.width; i++) {
         for (int j = 0; j < filter1.height; j++) {
@@ -195,10 +208,7 @@ Image task7(Image &filter7) {
     return filter7;
 }
 
-Image task8(Image &image) {
-    int width,height;
-    cout << "Enter width height\n";
-    cin >> width >> height;
+Image task8(Image &image,int width,int height) {
     if (width<=0) {width=0;}
     if (height<=0) {height=0;}
     Image image2(width,height);
@@ -212,6 +222,38 @@ Image task8(Image &image) {
     image2.saveImage("test.jpg");
     cout<<"Filter8 is done"<<endl;
     return image2;
+}
+
+Image task9(Image &image) {
+    cout << "Enter merge image : ";
+    string mergename; cin >> mergename;
+    extension(mergename);
+    Image image2(mergename);
+    cout<<"to bigger : b , , to smaller : a : ";
+    char c; cin >> c;
+    int width, height;
+    if (c=='b')  width=max(image.width,image2.width),height=max(image.height,image2.height);
+    else  width=min(image.width,image2.width),height=min(image.height,image2.height);
+    Image image4(width,height);
+    Image image5(width,height);
+    if (image.width==width && image.height==height) image4=image;
+    else image4=task8(image,width,height);
+
+   if (image2.width==width && image2.height==height) image5=image2;
+     else image5=task8(image,width,height);
+ 
+    Image image3(width,height);
+    for (int i=0;i<width;i++) {
+        for (int j=0;j<height;j++) {
+            for (int k=0;k<3;k++) {
+             int average=(image4(i,j,k)+image5(i,j,k))/2 ;
+                image3(i,j,k)=average;
+            }
+        }
+    }
+    image3.saveImage("test.jpg");
+    cout<<"Filter9 is done"<<endl;
+    return image3;
 }
 
 Image task15(Image filter15) {
@@ -229,18 +271,6 @@ Image task15(Image filter15) {
     return filter15;
 }
 
-bool extension(string &s) {
-    while (s.size()<5 ) {
-        cout<<"invalid input : "<<s<<endl;
-        return false;
-    }
-    while (!((s[s.size()-1]=='g' && s[s.size()-2]=='p' && s[s.size()-3]=='j' && s[s.size()-4]=='.') || (s[s.size()-1]=='p' && s[s.size()-2]=='m' && s[s.size()-3]=='b' && s[s.size()-4]=='.') || (s[s.size()-1]=='g' && s[s.size()-2]=='n' && s[s.size()-3]=='p' && s[s.size()-4]=='.') || (s[s.size()-1]=='a' && s[s.size()-2]=='g' && s[s.size()-3]=='t' && s[s.size()-4]=='.')))
-    {
-        cout<<"invalid input : "<<s<<endl;
-        return false;
-    }
-    return true;
-}
 
 Image loadAFile(string &s) {
     cout<<"please enter photo:"<<endl;
@@ -263,7 +293,7 @@ void List() {
     cout<<"Filter 6: Rotate Image"<<endl;
     cout<<"Filter 7: Darken and Lighten Image"<<endl;
     cout<<"Filter 8: Resizing Images"<<endl;
-
+    cout<<"Filter 9: Merge Images"<<endl;
     cout<<"Filter 15: Purple at Night Image"<<endl;
     cout<<"Save the image == s"<<endl;
     cout<<"Exit == ex"<<endl;
@@ -381,12 +411,19 @@ int main() {
             DetectIfSaveOrNOt++;
         }
         else if (name=="8") {
-            picture  = task8(picture);
+            int width,height;
+            cout << "Enter width height\n";
+            cin >> width >> height;
+            picture  = task8(picture,width,height);
+            DetectIfSaveOrNOt++;
+        }
+        else if (name=="9") {
+            picture = task9(picture);
             DetectIfSaveOrNOt++;
         }
         else if (name=="15") {
             picture = task15(picture);
-            DetectIfSaveOrNot++;
+            DetectIfSaveOrNOt++;
         }
         else if (name=="s") {
             saveImage(picture,s);
