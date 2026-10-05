@@ -241,7 +241,7 @@ Image task9(Image &image) {
 
    if (image2.width==width && image2.height==height) image5=image2;
      else image5=task8(image,width,height);
- 
+
     Image image3(width,height);
     for (int i=0;i<width;i++) {
         for (int j=0;j<height;j++) {
@@ -254,6 +254,25 @@ Image task9(Image &image) {
     image3.saveImage("test.jpg");
     cout<<"Filter9 is done"<<endl;
     return image3;
+}
+
+Image task13(Image &image) {
+    for (int i=0;i<image.width;i++) {
+        for (int j=0;j<image.height;j++) {
+            for (int k=0;k<2;k++) {
+               int avg=image(i,j,k)+30;
+                if (avg>255) avg=255;
+                image(i,j,k)=avg;
+            }
+            int avg=image(i,j,2)-30;
+            if (avg<0) avg=0;
+            image(i,j,2)=avg;
+
+        }
+    }
+    image.saveImage("test.jpg");
+    cout<<"Filter13 is done"<<endl;
+    return image;
 }
 
 Image task15(Image filter15) {
@@ -271,10 +290,18 @@ Image task15(Image filter15) {
     return filter15;
 }
 
+Image task17(Image &image,int skew) {
+    
+    
+    
+    
+    cout<<"filter17 is done"<<endl;
+    return image;
+}
 
 Image loadAFile(string &s) {
     cout<<"please enter photo:"<<endl;
-    cin >>s;
+    getline(cin,s);
     while (!extension(s)) {
         cin>>s;
     }
@@ -294,7 +321,9 @@ void List() {
     cout<<"Filter 7: Darken and Lighten Image"<<endl;
     cout<<"Filter 8: Resizing Images"<<endl;
     cout<<"Filter 9: Merge Images"<<endl;
+    cout<<"Filter 13: Wano does not have good natural sunlight. Can you fix that?"<<endl;
     cout<<"Filter 15: Purple at Night Image"<<endl;
+    cout<<"Filter 17: Image Skewing Filter"<<endl;
     cout<<"Save the image == s"<<endl;
     cout<<"Exit == ex"<<endl;
     cout << "***********************************\n";
@@ -421,9 +450,18 @@ int main() {
             picture = task9(picture);
             DetectIfSaveOrNOt++;
         }
+        else if (name=="13") {
+            picture = task13(picture);
+            DetectIfSaveOrNOt++;
+        }
         else if (name=="15") {
             picture = task15(picture);
             DetectIfSaveOrNOt++;
+        }
+        else if (name=="17") {
+            int skew; cin>>skew;
+            cout<<"Enter skewness : ";
+            picture = task17(picture, skew);
         }
         else if (name=="s") {
             saveImage(picture,s);
