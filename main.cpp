@@ -7,6 +7,7 @@ Youssef Tarek Moawad Eid                 20250773                      2,3,7
 */
 #include "Image_Class.h"
 #include<algorithm>
+#include<cmath>
 using namespace std;
 int  DetectIfSaveOrNOt=0;
 Image picture;
@@ -290,13 +291,48 @@ Image task15(Image filter15) {
     return filter15;
 }
 
-Image task17(Image &image,int skew) {
-    
-    
-    
-    
-    cout<<"filter17 is done"<<endl;
-    return image;
+Image task17(Image &image, int skew) {
+    if (skew <= -90 || skew >= 90) {
+        cout << "Angle must be between -89 and 89\n";
+        return image;
+    }
+
+    double angleRadians = skew * (3.14159265358979323846 / 180.0);
+    double t = tan(angleRadians);
+
+    int totalShift = (int)ceil(fabs(t) * (image.height - 1));   // largest row shift
+    Image out(image.width + totalShift, image.height);          // wide enough for ALL of the image
+
+    // white background (use 0 for black)
+    for (int i = 0; i < out.width; i++)
+        for (int j = 0; j < out.height; j++)
+            for (int k = 0; k < 3; k++)
+                out(i, j, k) = 255;
+
+    for (int j = 0; j < image.height; j++) {
+        int shift;
+        if (t >= 0) shift = (int)round(t * (image.height - 1 - j));  // top row moves most -> leans right
+        else        shift = (int)round(-t * j);                      // negative angle -> leans left
+
+        for (int i = 0; i < image.width; i++)
+            for (int k = 0; k < 3; k++)
+                out(i + shift, j, k) = image(i, j, k);               // i + shift <= width-1 + totalShift, always inside out
+    }
+    out.saveImage("test.jpg");
+    cout << "filter17 is done" << endl;
+    return out;
+}
+
+void filternum14(Image &image){
+    for (int i=0;i<image.width;i++)
+        for (int j=0;j<image.height;j++){
+            if (j%2!=0) continue;
+            else for (int c=0;c<3;c++)
+            {
+                image.setPixel(i,j,c,(image.getPixel(i,j,c)*0.6));
+            }
+        }
+    image.saveImage("good.png");
 }
 
 Image loadAFile(string &s) {
@@ -454,13 +490,17 @@ int main() {
             picture = task13(picture);
             DetectIfSaveOrNOt++;
         }
+        else if (name=="14") {
+           filternum14(picture);
+            DetectIfSaveOrNOt++;
+        }
         else if (name=="15") {
             picture = task15(picture);
             DetectIfSaveOrNOt++;
         }
         else if (name=="17") {
-            int skew; cin>>skew;
-            cout<<"Enter skewness : ";
+            int skew;
+            cout<<"Enter skewness : "; cin>>skew;
             picture = task17(picture, skew);
         }
         else if (name=="s") {
