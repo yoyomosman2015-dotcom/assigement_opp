@@ -70,6 +70,45 @@ Image Filter16(Image &picture) {
     return picture;
 }
 
+Image filter18( Image &picture) {
+    Image image2(picture.width,picture.height);
+    for (int i=0;i<picture.width;i++) {
+        for (int j=0;j<picture.height;j++) {
+            vector<int>intensityCount(21,0),sumR(21,0),sumG(21,0),sumB(21,0);
+            for (int h=i-4;h<i+4;h++) {
+                for (int v=j-4;v<j+4;v++) {
+                    if (h<0 || h>=picture.width || v<0 || v>=picture.height) continue;
+                    int aveg=(picture(h,v,0)+picture(h,v,1)+picture(h,v,2))/3;
+                    int bin=(aveg*20)/255;
+                    intensityCount[bin]++;
+                    sumR[bin]+=picture(h,v,0);
+                    sumG[bin]+=picture(h,v,1);
+                    sumB[bin]+=picture(h,v,2);
+                }
+            }
+            int maxCount=0,maxbin=0;;
+            for (int g=0;g<=20;g++)
+            {
+                if (maxCount<=intensityCount[g]) {
+                    maxCount=intensityCount[g];
+                    maxbin=g;
+                }
+            }
+            if (intensityCount[maxbin]>0) {
+                image2(i,j,0)=sumR[maxbin]/intensityCount[maxbin];
+                image2(i,j,1)=sumG[maxbin]/intensityCount[maxbin];
+                image2(i,j,2)=sumB[maxbin]/intensityCount[maxbin];
+            }
+            else {
+                image2(i,j,0)=picture(i,j,0);
+                image2(i,j,1)=picture(i,j,1);
+                image2(i,j,2)=picture(i,j,2);
+            }
+        }
+    }
+    image2.saveImage("test.jpg");
+    return image2;
+}
 int main() {
 
 
